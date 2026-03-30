@@ -1,0 +1,17 @@
+# ── Personal plan — not for public repo ──
+sai-fitness-plan/
+
+# ── OS / Editor ──
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# ── Secrets (never commit these) ──
+.env
+.env.local
+*.pem
+secrets.json
+fitness-app/js/config.js
