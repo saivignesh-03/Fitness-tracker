@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitTrack — Personalized Fitness Plans</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── LIQUID LOADER ── -->
+<div id="loader-screen">
+  <div class="loader-inner">
+    <div class="loader-logo-ring">
+      <svg viewBox="0 0 80 80" class="loader-ring-svg">
+        <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(92,242,122,0.15)" stroke-width="2"/>
+        <circle cx="40" cy="40" r="36" fill="none" stroke="#5cf27a" stroke-width="2"
+          stroke-dasharray="226" stroke-dashoffset="226" class="ring-progress"/>
+      </svg>
+      <div class="loader-logo-ft">FT</div>
+    </div>
+    <div class="loader-words">
+      <div class="loader-word" data-text="FITNESS">FITNESS</div>
+      <div class="loader-word loader-word-2" data-text="TRACKER">TRACKER</div>
+    </div>
+    <div class="loader-tagline">Personalized plans · Real results</div>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav class="top-nav">
+  <!-- LOGO -->
+  <div class="nav-logo" onclick="if(window._appVisible){showLanding()}">
+    <div class="nav-logo-icon">
+      <span>FT</span>
+    </div>
+    <div class="nav-logo-text">
+      <div class="nav-logo-main">FITNESS</div>
+      <div class="nav-logo-sub">TRACKER</div>
+    </div>
+  </div>
+
+  <!-- App tabs (only visible when logged in) -->
+  <div id="app-nav-tabs" style="display:none;display:flex;gap:2px;flex:1;overflow-x:auto">
+    <button class="app-nav-btn active" data-tab="overview" onclick="showAppTab('overview')">📊 Overview</button>
+    <button class="app-nav-btn" data-tab="plan"      onclick="showAppTab('plan')">🗓 Plan</button>
+    <button class="app-nav-btn" data-tab="grocery"   onclick="showAppTab('grocery')">🛒 Grocery</button>
+    <button class="app-nav-btn" data-tab="tracker"   onclick="showAppTab('tracker')">✅ Tracker</button>
+    <button class="app-nav-btn" data-tab="progress"  onclick="showAppTab('progress')">📈 Progress</button>
+    <button class="app-nav-btn" data-tab="ai"        onclick="showAppTab('ai')">🤖 AI Coach</button>
+  </div>
+
+  <div class="nav-right">
+    <button id="nav-login-btn"  class="nav-auth-btn nav-login"  onclick="openAuthModal('login')">Log In</button>
+    <button id="nav-signup-btn" class="nav-auth-btn nav-signup" onclick="openAuthModal('signup')">Sign Up Free</button>
+    <span   id="nav-user-badge" class="user-badge" style="display:none"></span>
+    <button id="nav-logout-btn" class="nav-auth-btn nav-logout" style="display:none" onclick="handleLogout()">Log out</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+  LANDING (public)
+════════════════════════════════════════ -->
+<div id="section-landing" class="landing">
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-label">⚡ Free Fitness Calculator + Personalized Plans</div>
+    <h1 class="hero-title">YOUR BODY.<br><span>YOUR PLAN.</span></h1>
+    <p class="hero-sub">Get your daily calorie target, macro split, and BMI instantly — no account needed. Create a free account for a full personalized meal plan, grocery list, and daily tracker.</p>
+    <div class="hero-cta-group">
+      <button class="btn-primary" onclick="document.getElementById('calc-section').scrollIntoView({behavior:'smooth'})">Try the Calculator</button>
+      <button class="btn-outline" onclick="openAuthModal('signup')">Create Free Account</button>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features-section">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔢</div>
+        <div class="feature-title">Instant Calculator</div>
+        <div class="feature-desc">Enter your weight, height, age, and goal — get your calories, protein, carbs, fats and water target in seconds. No account needed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗓</div>
+        <div class="feature-title">7-Day Meal Plan</div>
+        <div class="feature-desc">Full week of meals tailored to your goal — fat loss, recomp, muscle gain or maintenance. Budget-friendly, real-food ingredients.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-title">Weekly Grocery List</div>
+        <div class="feature-desc">Auto-generated shopping list that resets every Monday. Check off items as you shop — synced to your account across devices.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title">Daily Tracker</div>
+        <div class="feature-desc">Log meals, water, weight, workouts, sleep, and energy every day. All data saved to the cloud — accessible from any device.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">Progress Dashboard</div>
+        <div class="feature-desc">See your weight trend, meal adherence, workout counts, and streak over time. Watch your transformation unfold week by week.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🆓</div>
+        <div class="feature-title">Completely Free</div>
+        <div class="feature-desc">No premium tier, no credit card, no ads. Sign up with email and get everything for free. Your data stays private and secure.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULATOR SECTION -->
+  <div id="calc-section" class="calc-section" style="padding-top:60px">
+    <div class="section-title">FREE FITNESS CALCULATOR</div>
+    <div class="section-sub">Get your personalized targets — no account needed</div>
+
+    <div class="calc-card">
+      <div id="calc-error" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px"></div>
+
+      <div class="calc-grid">
+
+        <!-- Age -->
+        <div class="form-group">
+          <label>Age (years)</label>
+          <input type="number" id="calc-age" placeholder="25" min="14" max="80">
+        </div>
+
+        <!-- Sex -->
+        <div class="form-group">
+          <label>Biological Sex</label>
+          <select id="calc-sex">
+            <option value="">Select...</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <!-- Height -->
+        <div class="form-group">
+          <label id="calc-height-label">Height (cm)</label>
+          <div id="calc-height-units" class="unit-toggle" style="margin-bottom:6px">
+            <button class="active" data-unit="cm" onclick="setHeightUnit('cm')">cm</button>
+            <button data-unit="in" onclick="setHeightUnit('in')">inches</button>
+          </div>
+          <input type="number" id="calc-height" placeholder="175">
+        </div>
+
+        <!-- Weight -->
+        <div class="form-group">
+          <label id="calc-weight-label">Weight (kg)</label>
+          <div id="calc-weight-units" class="unit-toggle" style="margin-bottom:6px">
+            <button class="active" data-unit="kg" onclick="setWeightUnit('kg')">kg</button>
+            <button data-unit="lbs" onclick="setWeightUnit('lbs')">lbs</button>
+          </div>
+          <input type="number" id="calc-weight" placeholder="75">
+        </div>
+
+        <!-- Goal -->
+        <div class="form-group">
+          <label>Goal</label>
+          <select id="calc-goal">
+            <option value="">Select...</option>
+            <option value="fat_loss">Fat Loss</option>
+            <option value="recomp">Body Recomp</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="muscle_gain">Muscle Gain</option>
+          </select>
+        </div>
+
+        <!-- Activity -->
+        <div class="form-group">
+          <label>Activity Level</label>
+          <select id="calc-activity">
+            <option value="">Select...</option>
+            <option value="sedentary">Sedentary (desk job, no gym)</option>
+            <option value="light">Light (gym 1–3x/week)</option>
+            <option value="moderate" selected>Moderate (gym 3–5x/week)</option>
+            <option value="active">Active (hard training 6x/week)</option>
+            <option value="very_active">Athlete (twice daily)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button class="calc-btn" onclick="calculateMacros()">CALCULATE MY TARGETS</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-card" id="calc-results">
+      <div class="results-name">YOUR PERSONALISED TARGETS</div>
+      <div class="results-goal-tag" id="res-goal-tag"></div>
+
+      <div class="results-macros">
+        <div class="macro-card">
+          <div class="mc-icon">🔥</div>
+          <div class="mc-num" id="res-calories" style="color:var(--red)">—</div>
+          <div class="mc-unit">Goal Calories/day</div>
+        </div>
+        <div class="macro-card">
+          <div class="mc-icon">🥚</div>
+          <div class="mc-num" id="res-protein" style="color:var(--accent)">—</div>
+          <div class="mc-unit">Protein</div>
+        </div>
+        <div class="macro-card">
+          <div class="mc-icon">🌾</div>
+          <div class="mc-num" id="res-carbs" style="color:var(--blue)">—</div>
+          <div class="mc-unit">Carbohydrates</div>
+        </div>
+        <div class="macro-card">
+          <div class="mc-icon">🫒</div>
+          <div class="mc-num" id="res-fats" style="color:var(--accent2)">—</div>
+          <div class="mc-unit">Healthy Fats</div>
+        </div>
+        <div class="macro-card">
+          <div class="mc-icon">💧</div>
+          <div class="mc-num" id="res-water" style="color:var(--blue)">—</div>
+          <div class="mc-unit">Water/day</div>
+        </div>
+        <div class="macro-card">
+          <div class="mc-icon">⚡</div>
+          <div class="mc-num" id="res-tdee" style="color:var(--purple)">—</div>
+          <div class="mc-unit">TDEE (maintenance)</div>
+        </div>
+      </div>
+
+      <!-- BMI -->
+      <div class="results-bmi">
+        <div>
+          <div class="bmi-label">BMI</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1" id="res-bmi-num">—</div>
+          <div style="font-size:12px;margin-top:2px" id="res-bmi-cat"></div>
+        </div>
+        <div class="bmi-bar-wrap">
+          <div class="bmi-bar">
+            <div class="bmi-marker" id="res-bmi-marker" style="left:0%"></div>
+          </div>
+          <div class="bmi-info">
+            <span>15 · Underweight</span>
+            <span>18.5 · Healthy</span>
+            <span>25 · Overweight</span>
+            <span>40</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA to sign up -->
+      <div class="results-cta">
+        <p><strong>Want a full meal plan, weekly grocery list, and daily tracker?</strong> Create a free account — your numbers are pre-filled.</p>
+        <button class="btn-primary" style="font-size:15px;padding:11px 24px;white-space:nowrap" onclick="openAuthModal('signup')">Get Full Plan Free →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    FitTrack — Free Fitness Tracking for Everyone<br>
+    <span style="color:var(--muted);display:block;margin-top:4px">Always consult a physician before starting a new diet or exercise programme.</span>
+  </footer>
+
+</div><!-- end #section-landing -->
+
+
+<!-- ══════════════════════════════════════
+  APP DASHBOARD (logged-in users)
+════════════════════════════════════════ -->
+<div id="section-app">
+
+  <!-- App hero bar -->
+  <div class="app-hero">
+    <div class="app-hero-inner">
+      <div class="app-avatar">💪</div>
+      <div>
+        <div class="app-name" id="app-user-name">Athlete</div>
+        <div style="font-size:12px;color:var(--text-dim)" id="app-goal-tag">—</div>
+      </div>
+      <div class="app-stats">
+        <div class="app-stat"><div class="app-stat-num" id="app-stat-cals">—</div><div class="app-stat-label">kcal/day</div></div>
+        <div class="app-stat"><div class="app-stat-num" id="app-stat-protein">—</div><div class="app-stat-label">Protein</div></div>
+        <div class="app-stat"><div class="app-stat-num" id="app-stat-water">—</div><div class="app-stat-label">Water</div></div>
+        <div class="app-stat"><div class="app-stat-num" id="app-stat-start">—</div><div class="app-stat-label">Start wt</div></div>
+        <div class="app-stat"><div class="app-stat-num" id="app-stat-current" style="color:var(--accent)">—</div><div class="app-stat-label">Current wt</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App sub-tabs -->
+  <div class="app-tabs">
+    <button class="app-tab active" data-tab="overview" onclick="showAppTab('overview')">📊 Overview</button>
+    <button class="app-tab" data-tab="plan"     onclick="showAppTab('plan')">🗓 Meal Plan</button>
+    <button class="app-tab" data-tab="grocery"  onclick="showAppTab('grocery')">🛒 Grocery</button>
+    <button class="app-tab" data-tab="tracker"  onclick="showAppTab('tracker')">✅ Daily Tracker</button>
+    <button class="app-tab" data-tab="progress" onclick="showAppTab('progress')">📈 Progress</button>
+  </div>
+
+  <!-- ── OVERVIEW ── -->
+  <div id="app-overview" class="app-page active">
+    <div class="container">
+      <div class="section-title" style="margin-bottom:20px">YOUR DAILY TARGETS</div>
+      <div class="overview-grid">
+        <div class="overview-card highlight"><div class="ov-icon">🔥</div><div class="ov-num" id="ov-cals">—</div><div class="ov-label">kcal / day</div></div>
+        <div class="overview-card"><div class="ov-icon">🥚</div><div class="ov-num" id="ov-protein">—</div><div class="ov-label">Protein</div></div>
+        <div class="overview-card"><div class="ov-icon">🌾</div><div class="ov-num" id="ov-carbs">—</div><div class="ov-label">Carbs</div></div>
+        <div class="overview-card"><div class="ov-icon">🫒</div><div class="ov-num" id="ov-fats">—</div><div class="ov-label">Fats</div></div>
+        <div class="overview-card"><div class="ov-icon">💧</div><div class="ov-num" id="ov-water">—</div><div class="ov-label">Water / day</div></div>
+      </div>
+
+      <div class="macro-bar-wrap">
+        <div class="macro-bar-title">Macro Split · Protein / Carbs / Fats</div>
+        <div class="macro-bar">
+          <div class="macro-seg seg-p" style="width:33%"></div>
+          <div class="macro-seg seg-c" style="width:35%"></div>
+          <div class="macro-seg seg-f" style="width:32%"></div>
+        </div>
+        <div class="macro-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Protein</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Carbs</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div>Fats</div>
+        </div>
+      </div>
+
+      <!-- PROGRESSION PHASES — rendered by app.js based on startDate -->
+      <div class="section-title" style="margin-bottom:6px">PROGRESSION PHASES</div>
+      <div class="section-sub">8-week structure — each phase builds on the last</div>
+      <div id="ov-phases" style="margin-bottom:36px"></div>
+
+      <!-- WHERE TO SHOP -->
+      <div class="section-title" style="margin-bottom:6px">WHERE TO SHOP</div>
+      <div class="section-sub">90% of your food comes from Walmart — cheapest option available</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:36px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px">
+          <div style="font-size:22px;margin-bottom:8px">🔵</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#60a5fa;margin-bottom:8px">WALMART</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Your main store. Great Value brand is your friend — eggs, chicken, tilapia, oats, brown rice, frozen veggies, Greek yogurt, peanut butter. All budget-friendly.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px">
+          <div style="font-size:22px;margin-bottom:8px">🟢</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);margin-bottom:8px">WEGMANS / LOCAL</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">For quality produce, kefir, and specialty items. Their store-brand is affordable. Great for Greek yogurt variety and fresh fish.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px">
+          <div style="font-size:22px;margin-bottom:8px">🪔</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--purple);margin-bottom:8px">INDIAN GROCERY</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">For paneer, turmeric, cumin, coriander, chili powder, ginger. Buy spices here — way cheaper than supermarkets.</div>
+        </div>
+      </div>
+
+      <!-- FOOD SUBSTITUTIONS -->
+      <div class="section-title" style="margin-bottom:6px">SMART FOOD SWAPS</div>
+      <div class="section-sub">Budget-friendly replacements that keep your macros on track</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-bottom:36px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="color:var(--red);font-size:13px;flex-shrink:0">✗</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">REMOVE</div><div style="font-size:13px;font-weight:600">Salmon / Tuna</div></div>
+          <div style="color:var(--accent);flex-shrink:0">→</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">USE INSTEAD</div><div style="font-size:13px;font-weight:600;color:var(--accent)">Tilapia (frozen)</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="color:var(--red);font-size:13px;flex-shrink:0">✗</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">REMOVE</div><div style="font-size:13px;font-weight:600">Quinoa</div></div>
+          <div style="color:var(--accent);flex-shrink:0">→</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">USE INSTEAD</div><div style="font-size:13px;font-weight:600;color:var(--accent)">Brown rice</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="color:var(--red);font-size:13px;flex-shrink:0">✗</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">REMOVE</div><div style="font-size:13px;font-weight:600">Cottage cheese</div></div>
+          <div style="color:var(--accent);flex-shrink:0">→</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">USE INSTEAD</div><div style="font-size:13px;font-weight:600;color:var(--accent)">Low-fat paneer 🪔</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="color:var(--red);font-size:13px;flex-shrink:0">✗</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">REMOVE</div><div style="font-size:13px;font-weight:600">Tofu / Edamame</div></div>
+          <div style="color:var(--accent);flex-shrink:0">→</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">USE INSTEAD</div><div style="font-size:13px;font-weight:600;color:var(--accent)">Paneer + black beans</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="color:var(--red);font-size:13px;flex-shrink:0">✗</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">REMOVE</div><div style="font-size:13px;font-weight:600">Protein bars</div></div>
+          <div style="color:var(--accent);flex-shrink:0">→</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">USE INSTEAD</div><div style="font-size:13px;font-weight:600;color:var(--accent)">Greek yogurt + nuts</div></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px">
+          <div style="color:var(--red);font-size:13px;flex-shrink:0">✗</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">REMOVE</div><div style="font-size:13px;font-weight:600">Sour cream / heavy cream</div></div>
+          <div style="color:var(--accent);flex-shrink:0">→</div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text-dim)">USE INSTEAD</div><div style="font-size:13px;font-weight:600;color:var(--accent)">Plain Greek yogurt</div></div>
+        </div>
+      </div>
+
+      <!-- GUT HEALTH -->
+      <div class="section-title" style="margin-bottom:6px">GUT HEALTH PROTOCOL</div>
+      <div class="section-sub">Built into every day — not an afterthought</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:36px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-size:24px;margin-bottom:8px">🦠</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:6px">Daily Probiotics</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Plain Greek yogurt every day. Kefir from Week 3. These introduce good bacteria that reduce bloating and improve digestion.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-size:24px;margin-bottom:8px">🌾</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:6px">High Fiber (30–35g)</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Oats, black beans, chickpeas, broccoli, baby spinach daily. High fiber feeds the gut microbiome and keeps you full longer.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-size:24px;margin-bottom:8px">🧄</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:6px">Prebiotics Daily</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Garlic, onions, bananas, oats — these feed your good bacteria. Add garlic to every savory meal you cook.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-size:24px;margin-bottom:8px">🍵</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:6px">Morning Ritual</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Warm lemon water on waking. Ginger or chamomile tea at night. Simple free habit that makes a real difference.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-size:24px;margin-bottom:8px">🌶</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:6px">Anti-Inflammatory Spices</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Turmeric + black pepper daily. Add to eggs, rice, yogurt. Reduces inflammation that blocks fat loss.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-size:24px;margin-bottom:8px">😴</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:6px">Sleep 8 Hours</div>
+          <div style="font-size:12px;color:var(--text-dim);line-height:1.7">Gut heals during sleep. Poor sleep spikes cortisol, increases hunger hormones, and destroys fat loss progress.</div>
+        </div>
+      </div>
+
+      <!-- KEY SUCCESS RULES -->
+      <div class="section-title" style="margin-bottom:6px">KEY SUCCESS RULES</div>
+      <div class="section-sub">Non-negotiables for hitting your target</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(92,242,122,.2);line-height:1;margin-bottom:8px">01</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:4px">Protein at Every Meal</div>
+          <div style="font-size:12px;color:var(--text-dim)">Never eat without a protein source — eggs, chicken, Greek yogurt, beans. Aim for 35–45g per meal. This preserves muscle while losing fat.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(92,242,122,.2);line-height:1;margin-bottom:8px">02</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:4px">Sunday Meal Prep</div>
+          <div style="font-size:12px;color:var(--text-dim)">Batch-cook 3 lbs chicken, a pot of rice, boil a dozen eggs, roast veggies. Done in 2 hours. Feeds you the whole week.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(92,242,122,.2);line-height:1;margin-bottom:8px">03</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:4px">Progressive Overload</div>
+          <div style="font-size:12px;color:var(--text-dim)">Add weight to major lifts every 1–2 weeks. This tells your body to keep muscle while burning fat. Without this, you lose both.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(92,242,122,.2);line-height:1;margin-bottom:8px">04</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:4px">Don't Skip Rest Days</div>
+          <div style="font-size:12px;color:var(--text-dim)">Muscles grow and fat burns during recovery. Sleep 7–9 hrs. Active rest beats sitting — but full rest days are required.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(92,242,122,.2);line-height:1;margin-bottom:8px">05</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:4px">Track, Don't Obsess</div>
+          <div style="font-size:12px;color:var(--text-dim)">Weigh once a week, same morning, same conditions. Log daily in the Tracker. Weeks 3–4 are where real results start — trust it.</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(92,242,122,.2);line-height:1;margin-bottom:8px">06</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:4px">3.5L Water Daily</div>
+          <div style="font-size:12px;color:var(--text-dim)">Dehydration kills performance, increases hunger, and slows metabolism. Drink water before every meal. Use the tracker.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PLAN ── -->
+  <div id="app-plan" class="app-page">
+    <div class="container">
+      <div class="section-title" style="margin-bottom:4px">WEEKLY MEAL & EXERCISE PLAN</div>
+      <div class="section-sub">🌿 = Veg day &nbsp;|&nbsp; 😴 = Rest day</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:1px;margin-bottom:16px" id="plan-day-type"></div>
+      <div class="day-tabs">
+        <button class="day-tab active" onclick="selectDay(0, this)">Mon</button>
+        <button class="day-tab" onclick="selectDay(1, this)">Tue</button>
+        <button class="day-tab" onclick="selectDay(2, this)">Wed 🌿</button>
+        <button class="day-tab" onclick="selectDay(3, this)">Thu 😴</button>
+        <button class="day-tab" onclick="selectDay(4, this)">Fri</button>
+        <button class="day-tab" onclick="selectDay(5, this)">Sat 🌿</button>
+        <button class="day-tab" onclick="selectDay(6, this)">Sun 😴</button>
+      </div>
+      <div id="plan-content"></div>
+    </div>
+  </div>
+
+  <!-- ── GROCERY ── -->
+  <div id="app-grocery" class="app-page">
+    <div class="container">
+      <div class="section-title" style="margin-bottom:4px">WEEKLY GROCERY LIST</div>
+      <div class="section-sub">🔵 Walmart &nbsp;|&nbsp; 🟢 Wegmans &nbsp;|&nbsp; 🪔 Indian grocery — resets every Monday</div>
+      <div class="grocery-actions">
+        <button class="g-btn g-btn-check" onclick="groceryCheckAll()">✓ Check All</button>
+        <button class="g-btn g-btn-clear" onclick="groceryClearAll()">☐ Clear All</button>
+        <button class="g-btn g-btn-new"   onclick="groceryNewWeek()">🔄 New Week</button>
+        <span id="app-grocery-count" style="font-size:12px;color:var(--text-dim);font-family:'DM Mono',monospace">0 / 0 items</span>
+      </div>
+      <div id="app-grocery-week-label" style="font-size:11px;color:var(--text-dim);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:16px"></div>
+      <div id="app-grocery-list"></div>
+    </div>
+  </div>
+
+  <!-- ── TRACKER ── -->
+  <div id="app-tracker" class="app-page">
+    <div class="container">
+      <div class="section-title" style="margin-bottom:4px">DAILY TRACKER</div>
+      <div class="section-sub">Log meals, water, weight, workouts and notes — saved to your account automatically</div>
+
+      <div class="tracker-top">
+        <div class="t-field">
+          <label>Date</label>
+          <input type="date" id="t-date" onchange="loadDay()">
+        </div>
+        <div class="t-field">
+          <label>Weight (kg)</label>
+          <input type="number" id="t-weight" step="0.1" placeholder="75.0" style="width:105px" oninput="autoSave()">
+        </div>
+        <div class="t-field">
+          <label>Water (glasses · 250ml)</label>
+          <input type="number" id="t-water" min="0" max="20" placeholder="0" style="width:80px" oninput="refreshWater(); autoSave()">
+        </div>
+      </div>
+
+      <div class="water-bar-wrap">
+        <div class="macro-bar-title">💧 Water — Target 14 glasses (3.5L)</div>
+        <div class="water-bar"><div class="water-fill" id="water-fill" style="width:0%"></div></div>
+        <div class="water-meta"><span id="water-txt">0 / 14 glasses</span><span id="water-pct">0%</span></div>
+      </div>
+
+      <div class="meal-checklist">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px">🍽 Meal Checklist</div>
+        <div id="meal-checks"></div>
+      </div>
+
+      <div class="workout-wrap">
+        <div class="workout-label">🏋️ Workout Done Today</div>
+        <div class="workout-row">
+          <button class="w-btn" id="wb-weights" onclick="toggleWorkout('weights')">🏋️ Weights</button>
+          <button class="w-btn" id="wb-cardio"  onclick="toggleWorkout('cardio')">🏃 Cardio</button>
+          <button class="w-btn" id="wb-hiit"    onclick="toggleWorkout('hiit')">⚡ HIIT</button>
+          <button class="w-btn" id="wb-rest"    onclick="toggleWorkout('rest')">😴 Rest Day</button>
+        </div>
+      </div>
+
+      <div class="sliders-wrap">
+        <div class="slider-group">
+          <label>Sleep Last Night (hours)</label>
+          <input type="range" id="t-sleep" min="4" max="10" step="0.5" value="7"
+                 oninput="document.getElementById('sleep-v').textContent = parseFloat(this.value).toFixed(1) + ' hrs'; autoSave()">
+          <div class="slider-val" id="sleep-v">7.0 hrs</div>
+        </div>
+        <div class="slider-group">
+          <label>Energy Level Today</label>
+          <input type="range" id="t-energy" min="1" max="10" step="1" value="5"
+                 oninput="document.getElementById('energy-v').textContent = this.value + ' / 10'; autoSave()">
+          <div class="slider-val" id="energy-v">5 / 10</div>
+        </div>
+      </div>
+
+      <div class="notes-wrap">
+        <div class="notes-label">Notes — how did today go?</div>
+        <textarea class="notes-area" id="t-notes"
+          placeholder="Felt strong at the gym, had cravings in the evening, skipped the afternoon snack..."
+          oninput="autoSave()"></textarea>
+      </div>
+
+      <div style="display:flex;align-items:center">
+        <button class="save-btn" onclick="saveDay()">SAVE TODAY'S LOG</button>
+        <span class="saved-flash" id="saved-flash">✓ Saved!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROGRESS ── -->
+  <div id="app-progress" class="app-page">
+    <div class="container">
+      <div class="section-title" style="margin-bottom:20px">PROGRESS DASHBOARD</div>
+
+      <div class="progress-stats">
+        <div class="p-stat"><div class="p-stat-num" id="ps-start">—</div><div class="p-stat-label">Start Weight (kg)</div></div>
+        <div class="p-stat"><div class="p-stat-num" id="ps-current" style="color:var(--accent)">—</div><div class="p-stat-label">Current Weight (kg)</div></div>
+        <div class="p-stat"><div class="p-stat-num" id="ps-lost" style="color:var(--blue)">—</div><div class="p-stat-label">Weight Change</div></div>
+        <div class="p-stat"><div class="p-stat-num" id="ps-streak" style="color:var(--warn)">0</div><div class="p-stat-label">Day Streak</div></div>
+        <div class="p-stat"><div class="p-stat-num" id="ps-meals" style="color:var(--accent)">—</div><div class="p-stat-label">Meal Adherence</div></div>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="macro-bar-title">Weight Over Last 14 Days (kg)</div>
+        <div class="weight-chart" id="w-chart"></div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:10px">Log your weight in the Daily Tracker — chart fills automatically</div>
+      </div>
+
+      <div class="workout-stats">
+        <div class="ws-card"><div style="font-size:28px;margin-bottom:6px">🏋️</div><div class="ws-num" id="ws-weights">0</div><div class="ws-label">Weight Sessions</div></div>
+        <div class="ws-card"><div style="font-size:28px;margin-bottom:6px">🏃</div><div class="ws-num" id="ws-cardio" style="color:var(--blue)">0</div><div class="ws-label">Cardio Sessions</div></div>
+        <div class="ws-card"><div style="font-size:28px;margin-bottom:6px">⚡</div><div class="ws-num" id="ws-hiit" style="color:var(--warn)">0</div><div class="ws-label">HIIT Sessions</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AI COACH ── -->
+  <div id="app-ai" class="app-page">
+    <div class="container">
+
+      <div class="section-title" style="margin-bottom:4px">AI FITNESS COACH</div>
+      <div class="section-sub">Powered by Gemini — ask anything about your diet, macros, or training</div>
+
+      <!-- Quick Actions -->
+      <div class="ai-quick-grid">
+        <button class="ai-quick-btn" onclick="aiQuickAction('meal')">
+          <div class="ai-quick-icon">🍽</div>
+          <div class="ai-quick-label">Today's Meal Plan</div>
+          <div class="ai-quick-sub">Generate a full day of meals</div>
+        </button>
+        <button class="ai-quick-btn" onclick="aiQuickAction('protein')">
+          <div class="ai-quick-icon">🥚</div>
+          <div class="ai-quick-label">Protein Breakdown</div>
+          <div class="ai-quick-sub">How to hit your protein goal</div>
+        </button>
+        <button class="ai-quick-btn" onclick="aiQuickAction('weekly')">
+          <div class="ai-quick-icon">📅</div>
+          <div class="ai-quick-label">7-Day Plan</div>
+          <div class="ai-quick-sub">Full week overview</div>
+        </button>
+        <button class="ai-quick-btn" onclick="aiQuickAction('progress')">
+          <div class="ai-quick-icon">📈</div>
+          <div class="ai-quick-label">Analyze My Progress</div>
+          <div class="ai-quick-sub">Based on your last 7 days</div>
+        </button>
+      </div>
+
+      <!-- Chat window -->
+      <div class="ai-chat-wrap">
+        <div class="ai-chat-header">
+          <div class="ai-chat-title">💬 Chat with your AI Coach</div>
+          <button class="ai-clear-btn" onclick="aiClearChat()">Clear chat</button>
+        </div>
+        <div class="ai-messages" id="ai-messages">
+          <div class="ai-msg ai-msg-bot">
+            <div class="ai-msg-avatar">🤖</div>
+            <div class="ai-msg-bubble">Hey! I'm your AI fitness coach. I know your exact stats and goals. Ask me anything — meal ideas, macro questions, workout tips, or just type "generate my meal plan for today".</div>
+          </div>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-input" class="ai-input" placeholder="Ask anything... e.g. What should I eat post-workout?"
+            onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); aiSendMessage(); }">
+          <button class="ai-send-btn" onclick="aiSendMessage()" id="ai-send-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end #section-app -->
+
+
+<!-- ══════════════════════════════════════
+  AUTH MODAL
+════════════════════════════════════════ -->
+<div id="auth-modal" class="modal-overlay" onclick="if(event.target===this)closeAuthModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuthModal()">×</button>
+    <div class="modal-title">FitTrack</div>
+    <div class="modal-sub">Your free personalised fitness companion</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login"  onclick="switchAuthTab('login')">Log In</button>
+      <button class="auth-tab"        data-tab="signup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="login-form">
+      <div class="auth-error" id="login-error"></div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@email.com" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"
+               onkeydown="if(event.key==='Enter')handleLogin()">
+      </div>
+      <button class="auth-btn" id="login-btn" onclick="handleLogin()">LOG IN</button>
+      <div class="auth-switch">Don't have an account? <a onclick="switchAuthTab('signup')">Sign up free</a></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div id="signup-form" style="display:none">
+      <!-- Step indicators -->
+      <div class="step-indicator">
+        <div class="step-dot done"></div>
+        <div style="flex:1;height:2px;background:var(--border2);border-radius:1px"></div>
+        <div class="step-dot"></div>
+        <div class="step-label" id="step-label-text">Step 1 of 2 — Account details</div>
+      </div>
+
+      <!-- Step 1: credentials -->
+      <div id="signup-step1">
+        <div class="auth-error" id="signup-error"></div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="signup-email" placeholder="you@email.com" autocomplete="email">
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="signup-pass" placeholder="At least 6 characters" autocomplete="new-password">
+        </div>
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="signup-pass2" placeholder="Repeat password"
+                 onkeydown="if(event.key==='Enter')handleSignupStep1()">
+        </div>
+        <button class="auth-btn" onclick="handleSignupStep1()">CONTINUE →</button>
+        <div class="auth-switch">Already have an account? <a onclick="switchAuthTab('login')">Log in</a></div>
+      </div>
+
+      <!-- Step 2: profile -->
+      <div id="signup-step2" style="display:none">
+        <div class="auth-error" id="signup-error2"></div>
+        <div class="input-group">
+          <label>Your Name</label>
+          <input type="text" id="signup-name" placeholder="e.g. Alex" autocomplete="name">
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>Weight (kg)</label>
+            <input type="number" id="signup-weight" placeholder="75">
+          </div>
+          <div class="input-group">
+            <label>Height (cm)</label>
+            <input type="number" id="signup-height" placeholder="175">
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>Age</label>
+            <input type="number" id="signup-age" placeholder="25">
+          </div>
+          <div class="input-group">
+            <label>Biological Sex</label>
+            <select id="signup-sex">
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Goal</label>
+          <select id="signup-goal">
+            <option value="">Select...</option>
+            <option value="fat_loss">Fat Loss</option>
+            <option value="recomp">Body Recomp</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="muscle_gain">Muscle Gain</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Activity Level</label>
+          <select id="signup-activity">
+            <option value="sedentary">Sedentary (desk job, no gym)</option>
+            <option value="light">Light (gym 1–3x/week)</option>
+            <option value="moderate" selected>Moderate (gym 3–5x/week)</option>
+            <option value="active">Active (hard training 6x/week)</option>
+            <option value="very_active">Athlete (twice daily)</option>
+          </select>
+        </div>
+        <button class="auth-btn" id="signup-btn" onclick="handleSignupStep2()">CREATE ACCOUNT</button>
+        <div class="auth-switch"><a onclick="backToStep1()">← Back</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Single module entry point — imports data.js and calculator.js internally -->
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>
