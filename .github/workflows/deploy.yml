@@ -22,15 +22,18 @@ jobs:
           with open('fitness-app/js/config.template.js', 'r') as f:
               content = f.read()
 
+          def clean(key):
+              return os.environ[key].strip().replace('\n', '').replace('\r', '')
+
           replacements = {
-              '__GEMINI_API_KEY__':             os.environ['GEMINI_API_KEY'],
-              '__FIREBASE_API_KEY__':           os.environ['FIREBASE_API_KEY'],
-              '__FIREBASE_AUTH_DOMAIN__':       os.environ['FIREBASE_AUTH_DOMAIN'],
-              '__FIREBASE_PROJECT_ID__':        os.environ['FIREBASE_PROJECT_ID'],
-              '__FIREBASE_STORAGE_BUCKET__':    os.environ['FIREBASE_STORAGE_BUCKET'],
-              '__FIREBASE_MESSAGING_SENDER_ID__': os.environ['FIREBASE_MESSAGING_SENDER_ID'],
-              '__FIREBASE_APP_ID__':            os.environ['FIREBASE_APP_ID'],
-              '__FIREBASE_MEASUREMENT_ID__':    os.environ['FIREBASE_MEASUREMENT_ID'],
+              '__GEMINI_API_KEY__':               clean('GEMINI_API_KEY'),
+              '__FIREBASE_API_KEY__':             clean('FIREBASE_API_KEY'),
+              '__FIREBASE_AUTH_DOMAIN__':         clean('FIREBASE_AUTH_DOMAIN'),
+              '__FIREBASE_PROJECT_ID__':          clean('FIREBASE_PROJECT_ID'),
+              '__FIREBASE_STORAGE_BUCKET__':      clean('FIREBASE_STORAGE_BUCKET'),
+              '__FIREBASE_MESSAGING_SENDER_ID__': clean('FIREBASE_MESSAGING_SENDER_ID'),
+              '__FIREBASE_APP_ID__':              clean('FIREBASE_APP_ID'),
+              '__FIREBASE_MEASUREMENT_ID__':      clean('FIREBASE_MEASUREMENT_ID'),
           }
 
           for placeholder, value in replacements.items():
