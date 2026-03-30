@@ -48,6 +48,13 @@ function hideLoader() {
   if (l) l.classList.add('hidden');
 }
 
+// Safety fallback — hide loader after 4s no matter what
+setTimeout(() => {
+  hideLoader();
+  // If firebase never resolved, show landing anyway
+  if (!currentUser) showLanding();
+}, 4000);
+
 // ── BOOT ──
 initAuth(
   async (user, profile) => {
