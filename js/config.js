@@ -2,18 +2,12 @@
 export const CONFIG = {
   geminiApiKey: 'AIzaSyAGueUoLh8F2VCnAnkHQv3xQvOw14sPZqY',
   firebase: {
-    apiKey:            'AIzaSyCO1fGCsTHzAw2a72ITFBN2Idhd7-gnt0Y
-',
-    authDomain:        'fir-app-a7c41.firebaseapp.com
-',
-    projectId:         'fir-app-a7c41
-',
-    storageBucket:     'fir-app-a7c41.firebasestorage.app
-',
+    apiKey:            'AIzaSyCO1fGCsTHzAw2a72ITFBN2Idhd7-gnt0Y',
+    authDomain:        'fir-app-a7c41.firebaseapp.com',
+    projectId:         'fir-app-a7c41',
+    storageBucket:     'fir-app-a7c41.firebasestorage.app',
     messagingSenderId: '393489165989',
-    appId:             '1:393489165989:web:2c7798b6352b46aef9e74c
-',
-    measurementId:     'G-9EF5JZW3YK
-'
+    appId:             '1:393489165989:web:2c7798b6352b46aef9e74c',
+    measurementId:     'G-9EF5JZW3YK'
   }
 };
