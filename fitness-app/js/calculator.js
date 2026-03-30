@@ -81,23 +81,32 @@ export function calculateMacros() {
   const goalCals = tdee + (goalAdjust[goal] || 0);
 
   // Macros (protein first)
-  let protein, carbs, fats;
+  // Ranges based on Healthline, Muscle & Fitness, TDEECalculator.net consensus
+  let protein, proteinMin, proteinMax, carbs, fats;
   if (goal === 'fat_loss') {
-    protein = Math.round(weight * 2.2);        // 2.2g/kg
-    fats    = Math.round(goalCals * 0.28 / 9);
-    carbs   = Math.round((goalCals - protein * 4 - fats * 9) / 4);
+    proteinMin = Math.round(weight * 1.6);    // 1.6g/kg minimum
+    proteinMax = Math.round(weight * 2.2);    // 2.2g/kg upper ceiling
+    protein    = proteinMax;                  // target: upper end to preserve muscle
+    fats       = Math.round(goalCals * 0.28 / 9);
+    carbs      = Math.round((goalCals - protein * 4 - fats * 9) / 4);
   } else if (goal === 'recomp') {
-    protein = Math.round(weight * 2.0);
-    fats    = Math.round(goalCals * 0.30 / 9);
-    carbs   = Math.round((goalCals - protein * 4 - fats * 9) / 4);
+    proteinMin = Math.round(weight * 1.8);    // 1.8g/kg minimum
+    proteinMax = Math.round(weight * 2.2);    // 2.2g/kg upper ceiling
+    protein    = Math.round(weight * 2.0);    // target: mid-range
+    fats       = Math.round(goalCals * 0.30 / 9);
+    carbs      = Math.round((goalCals - protein * 4 - fats * 9) / 4);
   } else if (goal === 'muscle_gain') {
-    protein = Math.round(weight * 2.0);
-    fats    = Math.round(goalCals * 0.25 / 9);
-    carbs   = Math.round((goalCals - protein * 4 - fats * 9) / 4);
+    proteinMin = Math.round(weight * 1.6);    // 1.6g/kg optimum (research consensus)
+    proteinMax = Math.round(weight * 2.0);    // 2.0g/kg upper ceiling
+    protein    = Math.round(weight * 1.8);    // target: mid-range
+    fats       = Math.round(goalCals * 0.25 / 9);
+    carbs      = Math.round((goalCals - protein * 4 - fats * 9) / 4);
   } else {
-    protein = Math.round(weight * 1.8);
-    fats    = Math.round(goalCals * 0.30 / 9);
-    carbs   = Math.round((goalCals - protein * 4 - fats * 9) / 4);
+    proteinMin = Math.round(weight * 1.2);    // 1.2g/kg minimum
+    proteinMax = Math.round(weight * 1.6);    // 1.6g/kg upper
+    protein    = Math.round(weight * 1.4);    // target: mid-range
+    fats       = Math.round(goalCals * 0.30 / 9);
+    carbs      = Math.round((goalCals - protein * 4 - fats * 9) / 4);
   }
   carbs = Math.max(carbs, 80); // floor
 
@@ -140,6 +149,7 @@ export function calculateMacros() {
   document.getElementById('res-tdee').textContent = tdee;
   document.getElementById('res-calories').textContent = goalCals;
   document.getElementById('res-protein').textContent = protein + 'g';
+  document.getElementById('res-protein-range').textContent = `Range: ${proteinMin}–${proteinMax}g`;
   document.getElementById('res-carbs').textContent = carbs + 'g';
   document.getElementById('res-fats').textContent = fats + 'g';
   document.getElementById('res-water').textContent = water + 'L';
@@ -150,7 +160,7 @@ export function calculateMacros() {
   document.getElementById('res-bmi-marker').style.left = bmiPct + '%';
 
   // Store for signup pre-fill
-  window._calcResult = { weight, height, age, sex, goal, activity, goalCals, protein, carbs, fats, water, bmi, tdee };
+  window._calcResult = { weight, height, age, sex, goal, activity, goalCals, protein, proteinMin, proteinMax, carbs, fats, water, bmi, tdee };
 
   const card = document.getElementById('calc-results');
   card.classList.add('show');

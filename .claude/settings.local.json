@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -s \"https://saivignesh-03.github.io/Fitness-tracker/js/config.js\")",
+      "WebFetch(domain:www.calculator.net)",
+      "WebFetch(domain:www.healthline.com)",
+      "WebFetch(domain:www.muscleandfitness.com)",
+      "WebFetch(domain:tdeecalculator.net)",
+      "WebFetch(domain:www.myfitnesspal.com)",
+      "WebSearch",
+      "WebFetch(domain:support.myfitnesspal.com)",
+      "WebFetch(domain:iifym.com)",
+      "WebFetch(domain:examine.com)",
+      "WebFetch(domain:legionathletics.com)",
+      "WebFetch(domain:rippedbody.com)",
+      "WebFetch(domain:blog.myfitnesspal.com)"
+    ]
+  }
+}
